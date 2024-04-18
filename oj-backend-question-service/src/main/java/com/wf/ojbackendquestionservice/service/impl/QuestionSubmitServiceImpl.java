@@ -19,7 +19,8 @@ import com.wf.model.vo.QuestionSubmitVO;
 import com.wf.ojbackendquestionservice.mapper.QuestionSubmitMapper;
 import com.wf.ojbackendquestionservice.service.QuestionService;
 import com.wf.ojbackendquestionservice.service.QuestionSubmitService;
-import com.wf.ojbackendserviceclient.service.JudgeService;
+import com.wf.ojbackendserviceclient.service.JudgeFeignClient;
+import com.wf.ojbackendserviceclient.service.UserFeignClient;
 import com.wf.ojbackenduserservice.service.UserService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -45,11 +46,11 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     private QuestionService questionService;
 
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
     @Resource
     @Lazy
-    private JudgeService judgeService;
+    private JudgeFeignClient judgeFeignClient;
 
     /**
      * 题目提交
@@ -93,7 +94,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         }
         Long questionSubmitId = questionSubmit.getId();
         CompletableFuture.runAsync(() -> {
-            judgeService.doJudge(questionSubmitId);
+            judgeFeignClient.doJudge(questionSubmitId);
         });
         return questionSubmitId;
     }
@@ -133,7 +134,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         QuestionSubmitVO questionSubmitVO = QuestionSubmitVO.objToVo(questionSubmit);
         //脱敏后的用户信息  封装之后  返回给前端
         Long userId = loginUser.getId();
-        if (userId != questionSubmit.getUserId() && !userService.isAdmin(loginUser)) {
+        if (userId != questionSubmit.getUserId() && !userFeignClient.isAdmin(loginUser)) {
             questionSubmitVO.setCode(null);
         }
         return questionSubmitVO;

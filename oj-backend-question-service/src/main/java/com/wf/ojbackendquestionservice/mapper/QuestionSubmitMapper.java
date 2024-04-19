@@ -2,6 +2,7 @@ package com.wf.ojbackendquestionservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wf.model.entity.QuestionSubmit;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author Administrator
@@ -9,6 +10,7 @@ import com.wf.model.entity.QuestionSubmit;
 * @createDate 2023-12-19 19:43:57
 * @Entity com.yupi.oj.model.entity.QuestionSubmit
 */
+@Mapper
 public interface QuestionSubmitMapper extends BaseMapper<QuestionSubmit> {
 
 }

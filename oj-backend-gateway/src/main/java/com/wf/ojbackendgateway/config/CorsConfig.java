@@ -17,6 +17,10 @@ import java.util.Arrays;
  * @Version 1.0
  * @Since 1.0
  */
+
+/**
+ * 跨域配置
+ */
 @Configuration
 public class CorsConfig {
 
